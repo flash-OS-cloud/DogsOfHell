@@ -16,7 +16,7 @@ import { router } from "expo-router";
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const handleSignup = () => {
-    router.replace("/(tabs)");
+    router.replace("/(tabs)/dashboard");
   };
   return (
     <SafeAreaView className="flex-1 bg-[rgb(75_169_188)] w-full">
