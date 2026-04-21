@@ -38,11 +38,6 @@ export default function SignIn() {
             </Text>
             <View className="mb-6">
               <TextInput
-                className="w-full mb-6 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3.5 text-base text-gray-800"
-                placeholder="Full Name"
-                placeholderTextColor="rgb(156, 163, 175)"
-              />
-              <TextInput
                 className="w-full bg-gray-50 border mb-6 border-gray-200 rounded-lg px-4 py-3.5 text-base text-gray-800"
                 placeholder="Enter your phone number"
                 placeholderTextColor="rgb(156, 163, 175)"
@@ -74,28 +69,16 @@ export default function SignIn() {
               className="w-full bg-[rgb(75_169_188)] py-4 rounded-lg shadow-sm"
             >
               <Text className="text-white text-center font-bold text-lg">
-                Sign Up
+                Continue
               </Text>
             </TouchableOpacity>
-            <View className="items-center mt-5">
-              <Text className="text-gray-500 mt-1">Or</Text>
-              <Text className="text-center mt-4 text-gray-500">
-                By signing up, you agree to our Terms, Data{"\n"}Policy and
-                Cookies Policy.
+            <View className="items-center mt-2">
+              <Text className="text-center text-xs text-gray-500">
+                By Continuing, you agree to our T&C.
               </Text>
             </View>
           </View>
 
-          <View className="bg-white w-[90%] max-w-[380px]x-4 mt-4 py-4 rounded-xl shadow-sm   flex-row justify-center items-center">
-            <Text className="text-gray-600 text-sm">
-              Already have an account?
-            </Text>
-            <TouchableOpacity>
-              <Text className="text-[rgb(65_133_149)] font-bold text-sm">
-                Log in
-              </Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
