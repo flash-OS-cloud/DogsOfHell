@@ -1,6 +1,5 @@
 import { Tabs } from "expo-router";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function TabsLayout() {
   return (
@@ -33,14 +32,21 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
+        name="inbox"
+        options={{
+          title: "profile",
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons name="inbox-full" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: "profile",
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={
-                focused ? "information-circle" : "information-circle-outline"
-              }
+            <MaterialCommunityIcons
+              name="face-man-profile"
               color={color}
               size={24}
             />

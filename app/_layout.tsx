@@ -8,7 +8,7 @@ export default function RootLayout() {
     // </SafeAreaProvider>
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)"  options={{ headerShown: false }}  />
+      <Stack.Screen name="(patient)"  options={{ headerShown: false }}  />
     </Stack>
   );
 }
