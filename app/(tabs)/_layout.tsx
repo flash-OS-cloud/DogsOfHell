@@ -19,7 +19,7 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="dashboard"
         options={{
           title: "Dashboard",
           tabBarIcon: ({ color, focused }) => (
@@ -33,7 +33,7 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="about"
+        name="profile"
         options={{
           title: "profile",
           tabBarIcon: ({ color, focused }) => (
