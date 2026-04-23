@@ -1,15 +1,17 @@
 import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
-import { View, Text, Image, Pressable, ScrollView } from "react-native";
+import { View, Text, Image, Pressable, ScrollView, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import ImageGridOverlay, { ImagePiece } from "@/components/ImageOverlay";
+import { router } from "expo-router";
 
 export default function Index() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [pieces, setPieces] = useState<ImagePiece[]>([]);
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
   const splitImage = async (uriToSplit: string) => {
     setIsProcessing(true);
@@ -99,10 +101,65 @@ export default function Index() {
             <Pressable className="bg-zinc-800 p-2 rounded-full">
               <Ionicons name="notifications-outline" size={22} color="white" />
             </Pressable>
-            <Image source={{ uri: "https://xsgames.co/randomusers/avatar.php?g=male" }} className="w-10 h-10 rounded-full" />
+            
+            {/* WRAPPED AVATAR IN PRESSABLE */}
+            <Pressable onPress={() => setShowDropdown(true)}>
+              <Image 
+                source={{ uri: "https://xsgames.co/randomusers/avatar.php?g=male" }} 
+                className="w-10 h-10 rounded-full border border-zinc-700" 
+              />
+            </Pressable>
           </View>
         </View>
 
+        <Modal visible={showDropdown} transparent animationType="fade">
+          <Pressable 
+            className="flex-1" 
+            onPress={() => setShowDropdown(false)}
+          >
+            <View className="absolute top-20 right-4 w-48 bg-zinc-900 rounded-2xl p-2 border border-zinc-700 shadow-xl">
+              
+              <Pressable 
+                className="flex-row items-center gap-3 p-3 rounded-xl active:bg-zinc-800"
+                onPress={() => {
+                  setShowDropdown(false);
+                  router.push('/profile'); 
+                }}
+              >
+                <View className="w-8 h-8 rounded-full bg-teal-500/20 items-center justify-center">
+                  <Ionicons name="person-outline" size={16} color="#2dd4bf" />
+                </View>
+                <Text className="text-white font-medium text-base">Profile</Text>
+              </Pressable>
+
+              <Pressable 
+                className="flex-row items-center gap-3 p-3 rounded-xl active:bg-zinc-800 mt-1"
+                onPress={() => setShowDropdown(false)}
+              >
+                <View className="w-8 h-8 rounded-full bg-zinc-700/50 items-center justify-center">
+                  <Ionicons name="settings-outline" size={16} color="#a1a1aa" />
+                </View>
+                <Text className="text-white font-medium text-base">Settings</Text>
+              </Pressable>
+
+              <View className="h-[1px] bg-zinc-800 my-2 mx-2" />
+
+              <Pressable 
+                className="flex-row items-center gap-3 p-3 rounded-xl active:bg-zinc-800"
+                onPress={() => {
+                  setShowDropdown(false);
+                  router.replace('/');
+                }}
+              >
+                <View className="w-8 h-8 rounded-full bg-red-500/20 items-center justify-center">
+                  <Ionicons name="log-out-outline" size={16} color="#ef4444" />
+                </View>
+                <Text className="text-red-500 font-medium text-base">Logout</Text>
+              </Pressable>
+
+            </View>
+          </Pressable>
+        </Modal>
         <View className="mb-8">
           <Text className="text-white text-3xl font-bold">Hi, Rahul 👋</Text>
         </View>

@@ -15,7 +15,10 @@ import { router } from "expo-router";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
-  const handleSignup = () => {
+  const handleDoctor =() => {
+    router.replace("/(doctor)/dashboard")
+  }
+  const handlePatient = () => {
     router.replace("/(patient)/dashboard");
   };
   return (
@@ -65,11 +68,19 @@ export default function SignIn() {
               </View>
             </View>
             <TouchableOpacity
-              onPress={handleSignup}
+              onPress={handlePatient}
               className="w-full bg-[rgb(75_169_188)] py-4 rounded-lg shadow-sm"
             >
               <Text className="text-white text-center font-bold text-lg">
                 Continue
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleDoctor}
+              className="w-full bg-[rgb(75_169_188)] py-4 mt-4 rounded-lg shadow-sm"
+            >
+              <Text className="text-white text-center font-bold text-lg">
+                Continue as Doctor
               </Text>
             </TouchableOpacity>
             <View className="items-center mt-2">

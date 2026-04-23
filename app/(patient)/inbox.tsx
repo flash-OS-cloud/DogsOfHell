@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, Image, Pressable, ScrollView, TextInput } from "react-native";
+import { View, Text, Image, Pressable, ScrollView, TextInput, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
+// IMPORT YOUR COMPONENT (adjust path if needed)
+import DirectMessage from "../../components/dm"; 
 
 type MessageStatus = "Active" | "Closed";
 
@@ -16,6 +19,8 @@ interface ChatPreview {
 
 export default function MessagesScreen() {
   const [activeFilter, setActiveFilter] = useState<"All" | MessageStatus>("All");
+  
+  const [selectedChat, setSelectedChat] = useState<ChatPreview | null>(null);
 
   const [messages] = useState<ChatPreview[]>([
     {
@@ -45,27 +50,8 @@ export default function MessagesScreen() {
       status: "Closed",
       unreadCount: 0,
     },
-    {
-      id: "4",
-      patientName: "Sneha Desai",
-      avatar: "https://xsgames.co/randomusers/avatar.php?g=female&key=2",
-      lastMessage: "Can we reschedule tomorrow's follow-up to next week?",
-      time: "Mar 15",
-      status: "Active",
-      unreadCount: 0,
-    },
-    {
-      id: "5",
-      patientName: "Vikram Singh",
-      avatar: "https://xsgames.co/randomusers/avatar.php?g=male&key=3",
-      lastMessage: "No fever since yesterday morning.",
-      time: "Mar 10",
-      status: "Closed",
-      unreadCount: 0,
-    },
   ]);
 
-  // Filter logic
   const filteredMessages = messages.filter((msg) => {
     if (activeFilter === "All") return true;
     return msg.status === activeFilter;
@@ -82,7 +68,6 @@ export default function MessagesScreen() {
           </Pressable>
         </View>
 
-        {/* Search Bar */}
         <View className="flex-row items-center bg-zinc-950 rounded-xl px-4 py-2.5 border border-zinc-800">
           <Ionicons name="search" size={20} color="#71717a" />
           <TextInput
@@ -105,11 +90,7 @@ export default function MessagesScreen() {
                 : "bg-zinc-900 border-zinc-700"
             }`}
           >
-            <Text
-              className={`font-semibold ${
-                activeFilter === filter ? "text-white" : "text-zinc-400"
-              }`}
-            >
+            <Text className={`font-semibold ${activeFilter === filter ? "text-white" : "text-zinc-400"}`}>
               {filter}
             </Text>
           </Pressable>
@@ -122,61 +103,47 @@ export default function MessagesScreen() {
           filteredMessages.map((msg, index) => (
             <Pressable
               key={msg.id}
+              onPress={() => setSelectedChat(msg)}
               className={`flex-row items-center p-4 bg-zinc-900 ${
                 index !== filteredMessages.length - 1 ? "border-b border-zinc-800" : ""
               }`}
             >
-              {/* Avatar Container */}
               <View className="relative mr-4">
-                <Image
-                  source={{ uri: msg.avatar }}
-                  className="w-14 h-14 rounded-full border border-zinc-700"
-                />
+                <Image source={{ uri: msg.avatar }} className="w-14 h-14 rounded-full border border-zinc-700" />
                 {msg.status === "Active" && (
                   <View className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-zinc-900 rounded-full" />
                 )}
               </View>
 
-              {/* Message Content */}
               <View className="flex-1 justify-center">
                 <View className="flex-row justify-between items-center mb-1">
-                  <Text className="text-white font-bold text-lg" numberOfLines={1}>
-                    {msg.patientName}
-                  </Text>
-                  <Text className={`text-xs font-medium ${msg.unreadCount > 0 ? 'text-teal-400' : 'text-zinc-500'}`}>
-                    {msg.time}
-                  </Text>
+                  <Text className="text-white font-bold text-lg" numberOfLines={1}>{msg.patientName}</Text>
+                  <Text className={`text-xs font-medium ${msg.unreadCount > 0 ? 'text-teal-400' : 'text-zinc-500'}`}>{msg.time}</Text>
                 </View>
-                
-                <Text 
-                  className={`text-sm ${msg.unreadCount > 0 ? 'text-zinc-200 font-medium' : 'text-zinc-500'}`} 
-                  numberOfLines={2}
-                >
+                <Text className={`text-sm ${msg.unreadCount > 0 ? 'text-zinc-200 font-medium' : 'text-zinc-500'}`} numberOfLines={2}>
                   {msg.lastMessage}
                 </Text>
-              </View>
-
-              {/* Unread Badge */}
-              <View className="w-8 items-end justify-center ml-2">
-                {msg.unreadCount > 0 ? (
-                  <View className="bg-teal-500 rounded-full min-w-[24px] h-6 items-center justify-center px-1.5">
-                    <Text className="text-white text-xs font-bold">{msg.unreadCount}</Text>
-                  </View>
-                ) : (
-                  <Ionicons name="chevron-forward" size={20} color="#52525b" />
-                )}
               </View>
             </Pressable>
           ))
         ) : (
           <View className="flex-1 items-center justify-center pt-20">
-            <View className="bg-zinc-900 w-20 h-20 rounded-full items-center justify-center border border-zinc-800 mb-4">
-              <Ionicons name="chatbubbles-outline" size={32} color="#52525b" />
-            </View>
-            <Text className="text-zinc-400 text-lg font-medium">No {activeFilter.toLowerCase()} messages</Text>
+            <Text className="text-zinc-400 text-lg font-medium">No messages</Text>
           </View>
         )}
       </ScrollView>
+
+      <Modal 
+        visible={selectedChat !== null} 
+        animationType="slide" 
+        onRequestClose={() => setSelectedChat(null)}
+      >
+        <DirectMessage 
+          user={selectedChat} 
+          onClose={() => setSelectedChat(null)} 
+        />
+      </Modal>
+
     </View>
   );
 }

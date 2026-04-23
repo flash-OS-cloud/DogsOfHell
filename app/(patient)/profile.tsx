@@ -1,9 +1,14 @@
-import React from "react";
-import { View, Text, Image, ScrollView, Pressable } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Image, ScrollView, Pressable, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import DirectMessage from "@/components/dm";
+
 
 export default function PatientProfile() {
+  const [showChat, setShowChat] = useState(false)
   const patient = {
+    id: 1,
     name: "Rahul Sharma",
     username: "@rahul_s",
     age: 28,
@@ -16,13 +21,15 @@ export default function PatientProfile() {
       { id: 1, condition: "Acute Bronchitis", date: "Mar 12, 2026", status: "Resolved", icon: "medkit" },
       { id: 2, condition: "Mild Hypertension", date: "Jan 05, 2026", status: "Ongoing", icon: "pulse" },
       { id: 3, condition: "Vitamin D Deficiency", date: "Nov 20, 2025", status: "Resolved", icon: "sunny" },
-    ]
+    ],
+
   };
 
   return (
     <View className="flex-1 bg-zinc-950">
       <View className="flex-row items-center justify-between px-4 pt-12 pb-4 bg-zinc-900 border-b border-zinc-800">
-        <Pressable className="bg-zinc-800 p-2 rounded-full">
+        <Pressable className="bg-zinc-800 p-2 rounded-full"
+        onPress={() => router.replace("/(patient)/dashboard")}>
           <Ionicons name="arrow-back" size={24} color="white" />
         </Pressable>
         <Text className="text-white text-xl font-bold">Patient Record</Text>
@@ -64,7 +71,8 @@ export default function PatientProfile() {
         </View>
 
         <View className="flex-row gap-3 mb-8">
-          <Pressable className="flex-1 bg-teal-600 py-3.5 rounded-xl flex-row justify-center items-center gap-2">
+          <Pressable className="flex-1 bg-teal-600 py-3.5 rounded-xl flex-row justify-center items-center gap-2" 
+          onPress={() => setShowChat(true)}>
             <Ionicons name="chatbubble-ellipses" size={20} color="white" />
             <Text className="text-white font-semibold text-base">Message</Text>
           </Pressable>
@@ -103,6 +111,19 @@ export default function PatientProfile() {
         </View>
 
       </ScrollView>
+      <Modal 
+        visible={showChat} 
+        animationType="slide" 
+        onRequestClose={() => setShowChat(false)}
+      />
+        <DirectMessage 
+          user={{
+            id: String(patient.id),
+            patientName: patient.name,
+            avatar: patient.avatar
+          }} 
+          onClose={() => setShowChat(false)} 
+        />
     </View>
   );
 }
